@@ -1,180 +1,57 @@
-import java.util.*;
-import java.io.*;
-public class WordSearch{
-    private char[][]data;
-    private ArrayList<String> wordsToAdd;
-    private ArrayList<String> wordsAdded;
-    private Random randgen;
-    public WordSearch(int rows, int cols){
-	data = new char[rows][cols];
-	wordsToAdd = new ArrayList<String>();
-	wordsAdded = new ArrayList<String>();
-	clear();
-	int seed = (int)(Math.random()*10000);
-	randgen = new Random(seed);
+public class Book{
+    private String author;
+    private String title;
+    private String ISBN;
+    public Book(){
     }
-    public WordSearch(int rows, int cols, int seed){
-	data = new char[rows][cols];
-	wordsToAdd = new ArrayList<String>();
-	wordsAdded = new ArrayList<String>();
-	clear();
-	randgen = new Random(seed);
+    public Book(String a,String t, String i){
+	author = a;
+	title = t;
+	ISBN = i;
     }
-    private void clear(){
-	for (int i = 0; i < data.length; i++){
-	    for (int x = 0; x < data[i].length; x++){
-		data[i][x] = '_';
-	    }
-	}
+    public String getAuthor(){
+	return author;
+    }
+    public String getTitle(){
+	return title;
+    }
+    public String getISBN(){
+	return ISBN;
+    }
+    public void setAuthor(String s){
+	author = s;
+    }
+    public void setTitle(String s){
+	title = s;
+    }
+    public void setISBN(String s){
+	ISBN = s;
     }
     public String toString(){
-	String a = "";
-	for (int i = 0; i < data.length; i++){
-	    for (int x = 0; x < data[i].length; x++){
-		a += data[i][x];
-		if (x == data[i].length - 1){
-		    a += "\n";
-		}
-		else{
-		    a += " ";
-		}
-	    }
-	}
-	return a;
+	return title + ", "+author +", "+ISBN
     }
-    public boolean addWordHorizontal(String word, int row, int col){
-	try{
-	    for (int i = 0; i < word.length(); i++){
-		if (data[row][col + i]!='_' && data[row][col + i] != word.charAt(i)){
-		    return false;
-		}
-	    }
-	}catch (ArrayIndexOutOfBoundsException e){
-	    return false;
-	}
-	for (int i = 0; i < word.length(); i++){
-	    data[row][col + i] = word.charAt(i);
-	}
-	wordsToAdd.remove(word);
-	wordsAdded.add(word);
-	return true;
-	
+}
+abstract Class LibraryBook extends Book implements Comparable<LibraryBook>{
+    private String callNumber;
+    public LibraryBook(String a,String t, String i, String c){
+	super(String a,String t, String i);
+	callNumber = c;
     }
-    public boolean addWordVertical(String word, int row, int col){
-	try{
-	    for (int i = 0; i < word.length(); i++){
-		if (data[row + i][col]!='_' && data[row + i][col] != word.charAt(i)){
-		    return false;
-		}
-	    }
-	}catch (ArrayIndexOutOfBoundsException e){
-	    return false;
-	}
-	for (int i = 0; i < word.length(); i++){
-	    data[row + i][col] = word.charAt(i);
-	}
-	wordsToAdd.remove(word);
-	wordsAdded.add(word);
-	return true;
+    public String getCall(){
+	return callNumber;
     }
-    public boolean addWord(String w, int r, int c, int dr, int dc){
-	try{
-	    for (int i = 0; i < w.length(); i++){
-		if (data[r + dr*i][c + dc*i]!='_' && data[r+dr*i][c+dr*i]!= w.charAt(i)){
-		    return false;
-		}
-	    }
-	}catch (ArrayIndexOutOfBoundsException e) {
-	    return false;
-	}
-	if (dr == 0 && dc == 0){
-	    return false;
-	}
-	for (int i = 0; i < w.length(); i++){
-	    data[r + dr*i][c+dc*i] = w.charAt(i);
-	}
-	return true;
+    public void setCall(String s){
+	callNumber = s;
     }
-    public void loadWords(String fileName){
-	try{
-	    Scanner in = new Scanner(new File(fileName));
-	    while (in.hasNext()){
-		wordsToAdd.add(in.next());	
-	    }
-	}catch (FileNotFoundException e){
-	    System.exit(1);
-	}
+    abstract void checkout(String patron, String due){
     }
-    public String printWordList(){
-	return wordsToAdd.toString() + '\n' + wordsAdded.toString();
+    abstract void returned(){
     }
-    public void fillWithWords(){
-	for (int i = 0; i < wordsToAdd.size(); i++){
-	    tryAdd(wordsToAdd.get(i));
-	}
+    abstract String circulationStatus(){
     }
-    public void tryAdd(String w){
-	for (int t = 0; t < 200; t++){
-	    if (wordsAdded.contains(w)){
-		t = 200;
-	    }
-	    int x = randgen.nextInt(data.length);
-	    int y = randgen.nextInt(data.length);
-	    if (x%2 == 0){
-		addWordHorizontal(w, x, y);
-	    }
-	    else{
-		addWordHorizontal(w,x,y);
-	    }
-	}
+    public int compareTo(){
     }
-    public void fillRest(){
-	for (int r = 0; r < data.length; r++){
-	    for (int c = 0; c < data[r].length; c++){
-		if(data[r][c] == '_'){
-		    data[r][c] = (char)(randgen.nextInt(26) + (int)'A');
-		}
-	    }
-	}
-    }
-    public static void main(String[] args){
-	if (args.length < 3 || args.length > 5){
-	    System.out.println("enter 'java WordSearch rows cols filename randomSeed answers'");
-	}
-	if (args.length == 3){
-	    try{
-	    WordSearch x = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-	    x.loadWords(args[2]);
-	    x.fillWithWords();
-	    x.fillRest();
-	    System.out.println(x);
-	    }catch (NumberFormatException e){
-		System.out.println("enter 'java WordSearch rows cols filename randomSeed answers'");
-	    }
-	}
-	if (args.length == 4){
-	    try{
-		WordSearch x = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[3]));
-		x.loadWords(args[2]);
-		x.fillWithWords();
-		x.fillRest();
-		System.out.println(x);
-	    }catch (NumberFormatException e){
-		System.out.println("enter 'java WordSearch rows cols filename randomSeed answers'");
-	    }
-	}
-	if (args.length == 5){
-	    try{
-		WordSearch x = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-		x.loadWords(args[2]);
-		x.fillWithWords();
-		if (!args[4].equals("key")){
-		    x.fillRest();
-		}
-		System.out.println(x);
-	    }catch (NumberFormatException e){
-		System.out.println("enter 'java WordSearch rows cols filename randomSeed answers'");
-	    }	
-	}
+    public string toString(){
+	return super.toString +circulation
     }
 }
