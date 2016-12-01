@@ -47,18 +47,19 @@ abstract class LibraryBook extends Book implements Comparable<LibraryBook>{
     abstract void returned();
     abstract String circulationStatus();
     public int compareTo(LibraryBook l){
-    String n = callNumber;
-    String n2 = l.getCall();
-    if (n.equals(n2))return 0;
-    else if (n > n2)return 1;
-    else return -1;
+	String n = callNumber;
+	String n2 = l.getCall();
+	return n.compareTo(n2);
     }
     public String toString(){
     return super.toString()+ ", " +circulationStatus() + ", " + callNumber;
     }
 }
-public class ReferenceBook extends LibraryBook{
+class ReferenceBook extends LibraryBook{
     private String  collection;
+    public ReferenceBook(String a,String t, String i, String c){
+	super(a,t,i,c);
+    }
     public ReferenceBook(String a,String t, String i, String c, String co){
     super(a,t,i,c);
     collection = co;
@@ -69,7 +70,7 @@ public class ReferenceBook extends LibraryBook{
     public void setCollection(String c){
     collection = c;
     }
-    public void checkout(){
+    public void checkout(String p, String due){
     System.out.println( "cannot check out a reference book");
     }
     public void returned(){
@@ -82,16 +83,16 @@ public class ReferenceBook extends LibraryBook{
     return super.toString()+", "+ collection;
     }
 }
-public class CirculationBook extends ReferenceBook{
+class CirculationBook extends ReferenceBook{
     private String currentHolder;
     private String dueDate;
-    public ReferenceBook(String a,String t, String i, String c){
-	super.super(a,t,i,c);
+    public CirculationBook(String a,String t, String i, String c){
+	super(a,t,i,c);
 	currentHolder = "";
 	dueDate = "";
     }
     public String getDueDate(){
-	return duedate;
+	return dueDate;
     }
     public String getCurrentHolder(){
 	return currentHolder;
@@ -107,16 +108,17 @@ public class CirculationBook extends ReferenceBook{
 	setCurrentHolder(n);
     }
     public void returned(){
-	setDuedate("");
+	setDueDate("");
 	setCurrentHolder("");
     }
-    public toString(){
+    public String  toString(){
 	String s =  super.toString();
 	if(!(currentHolder.equals(""))){
-	    s +", "+ currentHolder;
+	    return s +", " + getCurrentHolder();
 	    }
 	if(!(dueDate.equals(""))){
-	    s +", " + Duedate;
+	    return s +", " + getDueDate();
 	    }
+	else return s;
     }
 }
