@@ -82,3 +82,41 @@ public class ReferenceBook extends LibraryBook{
     return super.toString()+", "+ collection;
     }
 }
+public class CirculationBook extends ReferenceBook{
+    private String currentHolder;
+    private String dueDate;
+    public ReferenceBook(String a,String t, String i, String c){
+	super.super(a,t,i,c);
+	currentHolder = "";
+	dueDate = "";
+    }
+    public String getDueDate(){
+	return duedate;
+    }
+    public String getCurrentHolder(){
+	return currentHolder;
+    }
+    public void setDueDate(String s){
+	dueDate = s;
+    }
+    public void setCurrentHolder(String s){
+	currentHolder = s;
+    }
+    public void checkout(String n, String d){
+	setDueDate(d);
+	setCurrentHolder(n);
+    }
+    public void returned(){
+	setDuedate("");
+	setCurrentHolder("");
+    }
+    public toString(){
+	String s =  super.toString();
+	if(!(currentHolder.equals(""))){
+	    s +", "+ currentHolder;
+	    }
+	if(!(dueDate.equals(""))){
+	    s +", " + Duedate;
+	    }
+    }
+}
