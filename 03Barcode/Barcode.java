@@ -7,12 +7,12 @@ public class Barcode implements Comparable<Barcode>{
     //               or zip contains a non digit
     //               _zip and _checkDigit are initialized.
     public Barcode(String zip) {
-	if (zip.length() = 5 && zip.matches("[0-9]+")){
+	if (zip.length() == 5 && zip.matches("[0-9]+")){
 	    _zip = zip;
 	    _checkDigit = checkSum() % 10;
 	}
 	else{
-	    throw new RuntimeException;
+	    throw new RuntimeException();
 	}
     }
     
@@ -27,7 +27,7 @@ public class Barcode implements Comparable<Barcode>{
     private int checkSum(){
 	int sum = 0;
 	for(int x; x < _zip.length();x++){
-	    sum += parseInt(_zip.charAt(x));
+	    sum += Integer.parseInt(_zip.charAt(x));
 	}
 	return sum;
     }
@@ -36,14 +36,14 @@ public class Barcode implements Comparable<Barcode>{
 //ex. "084518  |||:::|::|::|::|:|:|::::|||::|:|"      
     public String toString(){
 	String s = "";
-	s +=_zip;
-	s+=_checkDigit;
+	String zip =_zip; 
+	zip+=_checkDigit;
+	s+= zip;
 	s+="   |";
-	for(int x = 0;x < _zip.length(); x ++){
-	    s +=bar(_zip.charAt(x));
+	for(int x = 0;x < zip.length(); x ++){
+	    s +=bar(zip.charAt(x));
 	}
-	s+= bar(_checkDigit);
-	s+= "|"
+	s+= "|";
     }
     private String bar(char num){
 	if( num == '0') return "||:::";
