@@ -1,3 +1,4 @@
+import java.util.*;
 public class Barcode implements Comparable<Barcode>{
     private String _zip;
     private int _checkDigit;
@@ -26,8 +27,8 @@ public class Barcode implements Comparable<Barcode>{
     // postcondition: computes and returns the check sum for _zip
     private int checkSum(){
 	int sum = 0;
-	for(int x; x < _zip.length();x++){
-	    sum += Integer.parseInt(_zip.charAt(x));
+	for(int x = 0; x < _zip.length();x++){
+	    sum += Integer.parseInt(_zip.charAt(x) +"");
 	}
 	return sum;
     }
@@ -36,14 +37,11 @@ public class Barcode implements Comparable<Barcode>{
 //ex. "084518  |||:::|::|::|::|:|:|::::|||::|:|"      
     public String toString(){
 	String s = "";
-	String zip =_zip; 
-	zip+=_checkDigit;
-	s+= zip;
+	s+= _zip + _checkDigit;
 	s+="   |";
-	for(int x = 0;x < zip.length(); x ++){
-	    s +=bar(zip.charAt(x));
-	}
+	toBarcode(_zip);
 	s+= "|";
+	return s;
     }
     private String bar(char num){
 	if( num == '0') return "||:::";
@@ -56,16 +54,29 @@ public class Barcode implements Comparable<Barcode>{
 	if( num == '7') return "|:::|";
 	if( num == '8') return "|::|:";
 	if( num == '9') return "|:|::";
+	else return "";
     }
-    public String getBar(){
+    public String getZip(){
 	return _zip + _checkDigit;
     }
 
 // postcondition: compares the zip + checkdigit, in numerical order. 
     public int compareTo(Barcode other){
-	return (other.getBar()).compareTo(_zip +_checkDigit);
+	return (other.getZip()).compareTo(_zip +_checkDigit);
 	
     }
-    
+    public static String toCode(String zip){
+	Barcode bar = new Barcode(zip);
+	zip = bar.getZip();
+	String s = "";
+	char[] num  = new char[6];
+	for(int x = 0;x < zip.length(); x ++){
+	    char[x] = zip.charAt(x));
+	s += car(char[x]);
+	}	
+    }
+    //  public static String toZip(String Barcode){
+    //	if (Barcode.length()!=) throw new 
+    //}
 }
 
