@@ -7,13 +7,15 @@ public class Sorts{
 	    int val = data[x];
 	    int index = 0;
 	    for(int y = x+1;y < data.length; y ++){
-		if (data[y] > val){
+		if (data[y] < val){
 		    val = data[y];
 		    index = y;
 		}
-	    } 
-	    data[index] = data[x];
-	    data[x] = val;
+	    }
+	    if(val != data[x]){
+		data[index] = data[x];
+		data[x] = val;
+	    }
 	}
     }
     public static void main(String[]args){
