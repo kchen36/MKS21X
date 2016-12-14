@@ -16,9 +16,21 @@ public class Sorts{
 	    data[x] = val;
 	}
     }
+    public static void insertionSort(int[] data){
+	for(int x = 1; x < data.length; x ++){
+	    if (data[x] < data[x -1]){
+		int temp = data[x];
+		int y;
+		for(y = x;y > 0 && data[y-1] > temp; y --){
+			data[y] = data[y-1];
+		}
+		data[y] = temp;
+	    }
+	}
+    }
     public static void main(String[]args){
-	int[] vals = {1,5,6,3,12,13,14,0,1};
-	selectionSort(vals);
+	int[] vals = {1,5,6,3,-12,12,111,14,0,1};
+	insertionSort(vals);
 	for(int x = 0; x < vals.length;x++){
 	    System.out.println(vals[x]);
 	}
